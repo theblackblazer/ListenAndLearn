@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/backdesign"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/listen"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"/>
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="130dp"
+        android:background="@android:color/holo_orange_dark"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/question_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="How are you?"
+        android:layout_margin="20dp"
+        android:background="@drawable/btndesign"
+        android:padding="20dp"/>
+    <Button
+        android:id="@+id/answer_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I am Fine.."
+        android:layout_margin="20dp"
+        android:background="@drawable/btndesign"
+        android:padding="20dp"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="130dp"
+        android:background="@android:color/holo_orange_dark"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:id="@+id/back_btn"/>
+
+
+
+</LinearLayout>
+
