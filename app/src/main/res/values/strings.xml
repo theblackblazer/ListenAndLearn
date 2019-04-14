@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Listen And Learn</string>
+    <string-array name="planets_array">
+        <item>Question</item>
+        <item>Answer</item>
+    </string-array>
 </resources>

@@ -5,6 +5,8 @@
 
     <dist:module dist:instant="true" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SixthActivity"></activity>
+        <activity android:name=".ViewQuestions"></activity>
+        <activity android:name=".AddQuestionActivity" />
+        <activity android:name=".SixthActivity" />
         <activity android:name=".FifthActivity" />
         <activity android:name=".FourthActivity" />
         <activity android:name=".ThirdActivity" />
