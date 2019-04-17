@@ -47,7 +47,11 @@ public class LoginActivity extends AppCompatActivity {
                 UsersDbHelper usersDbHelper = new UsersDbHelper(getApplicationContext());
                     SQLiteDatabase database = usersDbHelper.getReadableDatabase();
 
-                    cursor = database.rawQuery("SELECT * FROM "+ UsersContract.UsersEntry.TABLE_NAME + " WHERE " + UsersContract.UsersEntry.Email + "=? AND "+ UsersContract.UsersEntry.Password + "=?",new String[]{Email,password});
+                    cursor = database.rawQuery("SELECT * FROM "+
+                            UsersContract.UsersEntry.TABLE_NAME
+                            + " WHERE " + UsersContract.UsersEntry.Email +
+                            "=? AND "+ UsersContract.UsersEntry.Password +
+                            "=?",new String[]{Email,password});
                     if(cursor!=null)
                     {
                         if(cursor.getCount()>0){

@@ -2,8 +2,10 @@ package com.example.listenandlearn;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,18 +16,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
-public class AddQuestionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AddQuestionActivity extends AppCompatActivity {
 
-    String selected="";
-    EditText q_no;
+
+    Handler seekHandler = new Handler();
+    String selected = "";
     EditText q_name;
     Button record;
     Button play;
     Button save;
+    SeekBar seekbar;
+    Spinner spinner;
+    private TextView time;
 
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -36,7 +45,7 @@ public class AddQuestionActivity extends AppCompatActivity implements AdapterVie
 
     // Requesting permission to RECORD_AUDIO
     private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
     private void onRecord(boolean start) {
         if (start) {
@@ -65,9 +74,11 @@ public class AddQuestionActivity extends AppCompatActivity implements AdapterVie
             Log.e(LOG_TAG, "prepare() failed");
         }
     }
+
     private void stopPlaying() {
         player.release();
-        player = null;
+
+        seekbar.setProgress(0);
     }
 
     private void startRecording() {
@@ -93,19 +104,15 @@ public class AddQuestionActivity extends AppCompatActivity implements AdapterVie
     }
 
 
-
-
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 break;
         }
-        if (!permissionToRecordAccepted ) finish();
+        if (!permissionToRecordAccepted) finish();
 
     }
 
@@ -115,18 +122,18 @@ public class AddQuestionActivity extends AppCompatActivity implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_question);
 
-        Spinner spinner = (Spinner) findViewById(R.id.questions_spinner);
+        spinner = (Spinner) findViewById(R.id.questions_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.planets_array, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        q_no = findViewById(R.id.question_number);
         q_name = findViewById(R.id.question_name);
         record = findViewById(R.id.record_button);
         play = findViewById(R.id.play_button);
         save = findViewById(R.id.save_button);
+        seekbar = findViewById(R.id.seekbar);
 
         fileName = getExternalCacheDir().getAbsolutePath();
         fileName += "/audiorecordtest.3gp";
@@ -134,49 +141,82 @@ public class AddQuestionActivity extends AppCompatActivity implements AdapterVie
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
 
-
         record.setOnClickListener(new View.OnClickListener() {
-            boolean mStartRecording=true;
+            boolean mStartRecording = true;
+
             @Override
             public void onClick(View v) {
                 onRecord(mStartRecording);
-                if(mStartRecording){
+                if (mStartRecording) {
                     record.setText("Stop Recording");
-                }
-                else {
+                } else {
                     record.setText("Record");
                 }
-                mStartRecording=!mStartRecording;
+                mStartRecording = !mStartRecording;
             }
         });
 
         play.setOnClickListener(new View.OnClickListener() {
-            boolean mStartPlaying=true;
+            boolean mStartPlaying = true;
+
             @Override
             public void onClick(View v) {
                 onPlay(mStartPlaying);
-                if(mStartPlaying) {
+                if (mStartPlaying) {
                     play.setText("Stop");
-                }
-                else {
+                    seekbar.setMax(player.getDuration());
+                    seekUpdation();
+                } else {
                     play.setText("Play");
+
                 }
-                mStartPlaying=!mStartPlaying;
+                mStartPlaying = !mStartPlaying;
             }
         });
 
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressvalue = 0;
 
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressvalue = progress;
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                String name = q_name.getText().toString();
+                UsersDbHelper usersDbHelper = new UsersDbHelper(getApplicationContext());
+                SQLiteDatabase database = usersDbHelper.getWritableDatabase();
+                selected=spinner.getSelectedItem().toString();
+                if (selected.equals("Question"))
+                {
+                    usersDbHelper.addQuestion(name, database);
+                    usersDbHelper.close();
+                    q_name.setText("");
+                    Toast.makeText(getApplicationContext(), "File Saved", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        selected=parent.getItemAtPosition(position).toString();
-    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
 
-    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -189,6 +229,20 @@ public class AddQuestionActivity extends AppCompatActivity implements AdapterVie
             player.release();
             player = null;
         }
+    }
+
+    Runnable run = new Runnable() {
+
+        @Override
+        public void run() {
+            seekUpdation();
+        }
+    };
+
+    public void seekUpdation() {
+
+        seekbar.setProgress(player.getCurrentPosition());
+        seekHandler.postDelayed(run, 1000);
     }
 
 }

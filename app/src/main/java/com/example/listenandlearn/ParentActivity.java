@@ -1,46 +1,81 @@
 package com.example.listenandlearn;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParentActivity extends AppCompatActivity {
 
-    private Button add_question;
-    private Button view_question;
-    private Button logout;
+    private RecyclerView recyclerView;
+    private FloatingActionButton addQuesBtn;
+    private List<QList> qlist=new ArrayList<>();
+    private QAdapter adapter;
+    private  UsersDbHelper usersDbHelper;
+    private SQLiteDatabase database;
+    private Cursor cursor;
+    private int resId;
+    private LayoutAnimationController animation;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        fetchQuestions();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
+        usersDbHelper = new UsersDbHelper(getApplicationContext());
+        database = usersDbHelper.getReadableDatabase();
+        resId = R.anim.falldownlayout;
+        animation= AnimationUtils.loadLayoutAnimation(this, resId);
+        cursor=database.rawQuery("SELECT * FROM "+
+                UsersContract.UsersEntry.QUESTION_TABLE,null);
 
-        add_question=findViewById(R.id.add_record);
-        view_question = findViewById(R.id.view_btn);
-        logout = findViewById(R.id.logout_btn);
+        addQuesBtn=findViewById(R.id.fab);
+        recyclerView=findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(false);
 
-        add_question.setOnClickListener(new View.OnClickListener() {
+        addQuesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),AddQuestionActivity.class));
-            }
-        });
 
-        view_question.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ViewQuestions.class));
             }
         });
+       fetchQuestions();
+    }
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-            }
-        });
+    private void fetchQuestions(){
+
+        qlist.clear();
+        cursor=database.rawQuery("SELECT * FROM "+
+                UsersContract.UsersEntry.QUESTION_TABLE,null);
+        if(!cursor.moveToFirst()){
+            Toast.makeText(this, "No questions", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            qlist.add(new QList(cursor.getInt(0),cursor.getString(1)));
+            while (cursor.moveToNext())
+                qlist.add(new QList(cursor.getInt(0),cursor.getString(1)));
+        }
+        adapter=new QAdapter(qlist,this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutAnimation(animation);
     }
 }
 
