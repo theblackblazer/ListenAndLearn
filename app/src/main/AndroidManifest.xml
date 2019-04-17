@@ -20,7 +20,9 @@
         <activity android:name=".FifthActivity" />
         <activity android:name=".FourthActivity" />
         <activity android:name=".ThirdActivity" />
-        <activity android:name=".ParentActivity" />
+        <activity android:name=".ParentActivity" >
+
+        </activity>
         <activity android:name=".SecondActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
@@ -30,6 +32,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
