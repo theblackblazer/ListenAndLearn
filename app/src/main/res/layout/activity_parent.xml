@@ -34,5 +34,16 @@
         app:rippleColor="#fff"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/logout_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_power_settings_new_black_24dp"
+        android:layout_margin="16dp"
+        app:rippleColor="#fff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        app:backgroundTint="#3f51b5" />
 
 </RelativeLayout>

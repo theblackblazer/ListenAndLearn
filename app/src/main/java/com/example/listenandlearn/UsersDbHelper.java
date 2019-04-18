@@ -17,7 +17,7 @@ public class UsersDbHelper extends SQLiteOpenHelper {
     public static final String DROP_TABLE = "drop table if exists " + UsersContract.UsersEntry.TABLE_NAME;
     public static final String CREATE_TABLE_QUESTION = "create table " + UsersContract.UsersEntry.QUESTION_TABLE + "( " + UsersContract.UsersEntry.Question_Id + " INTEGER PRIMARY KEY AUTOINCREMENT," + UsersContract.UsersEntry.Question_Name + " text);";
     public static final String DROP_TABLE_QUESTION = "drop table if exists " + UsersContract.UsersEntry.QUESTION_TABLE;
-    public static final String CREATE_TABLE_ANSWER = "create table " + UsersContract.UsersEntry.ANSWER_TABLE + "( " + UsersContract.UsersEntry.Answer_Id + " INTEGER PRIMARY KEY AUTOINCREMENT," + UsersContract.UsersEntry.Answer_Name + " text);";
+    public static final String CREATE_TABLE_ANSWER = "create table " + UsersContract.UsersEntry.ANSWER_TABLE + "( " + UsersContract.UsersEntry.Answer_Id + " INTEGER PRIMARY KEY," + UsersContract.UsersEntry.Answer_Name + " text);";
     public static final String DROP_TABLE_ANSWER = "drop table if exists " + UsersContract.UsersEntry.ANSWER_TABLE;
 
 
@@ -68,9 +68,10 @@ public class UsersDbHelper extends SQLiteOpenHelper {
         Log.d("Database Operations", "One Row Inserted ..");
     }
 
-    public void addAnswer( String a_name, SQLiteDatabase database) {
+    public void addAnswer(int a_id, String a_name, SQLiteDatabase database) {
 
         ContentValues contentValues = new ContentValues();
+        contentValues.put(UsersContract.UsersEntry.Answer_Id, a_id);
         contentValues.put(UsersContract.UsersEntry.Answer_Name, a_name);
 
         database.insert(UsersContract.UsersEntry.ANSWER_TABLE, null, contentValues);

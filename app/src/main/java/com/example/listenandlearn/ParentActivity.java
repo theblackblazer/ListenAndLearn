@@ -20,7 +20,7 @@ import java.util.List;
 public class ParentActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private FloatingActionButton addQuesBtn;
+    private FloatingActionButton addQuesBtn,logout;
     private List<QList> qlist=new ArrayList<>();
     private QAdapter adapter;
     private  UsersDbHelper usersDbHelper;
@@ -46,6 +46,7 @@ public class ParentActivity extends AppCompatActivity {
                 UsersContract.UsersEntry.QUESTION_TABLE,null);
 
         addQuesBtn=findViewById(R.id.fab);
+        logout=findViewById(R.id.logout_btn);
         recyclerView=findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(false);
@@ -53,8 +54,16 @@ public class ParentActivity extends AppCompatActivity {
         addQuesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),AddQuestionActivity.class));
+                Intent i=new Intent(getApplicationContext(),AddQuestionActivity.class);
+                i.putExtra("selected","Question");
+                startActivity(i);
 
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
        fetchQuestions();

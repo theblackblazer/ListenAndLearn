@@ -1,75 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:background="@drawable/backdesign"
     tools:context=".MainActivity">
 
     <ImageView
+        android:id="@+id/image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/listen"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"/>
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log In"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="130dp"
-        android:background="@android:color/holo_orange_dark"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"/>
+        android:backgroundTint="#ff5722"
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_person_add_black_24dp"
+        app:rippleColor="#fff"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/image_view">
 
-    <Button
-        android:id="@+id/name_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What is your name?"
-        android:layout_margin="5dp"
-        android:background="@drawable/btndesign"
-        android:padding="10dp"/>
-    <Button
-        android:id="@+id/how_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="How are you?"
-        android:layout_margin="5dp"
-        android:background="@drawable/btndesign"
-        android:padding="10dp"/>
-    <Button
-        android:id="@+id/mom_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Is your mother at home?"
-        android:layout_margin="5dp"
-        android:background="@drawable/btndesign"
-        android:padding="10dp"/>
-    <Button
-        android:id="@+id/classs_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Which Class Are You In?"
-        android:layout_margin="5dp"
-        android:background="@drawable/btndesign"
-        android:padding="10dp"/>
-    <Button
-        android:id="@+id/school_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Which School Do You Go To?"
-        android:layout_margin="5dp"
-        android:background="@drawable/btndesign"
-        android:padding="10dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            tools:listitem="@layout/recycler_view_item_main">
 
+        </android.support.v7.widget.RecyclerView>
 
+    </ScrollView>
 
-
-</LinearLayout>
+</RelativeLayout>
 

@@ -33,9 +33,9 @@ public class AddQuestionActivity extends AppCompatActivity {
     Button play;
     Button save;
     SeekBar seekbar;
-    Spinner spinner;
+//    Spinner spinner;
     private TextView time;
-
+    private int id;
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static String fileName = null;
@@ -121,13 +121,16 @@ public class AddQuestionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_question);
+        selected=getIntent().getStringExtra("selected");
+        id=getIntent().getIntExtra("id",0);
 
-        spinner = (Spinner) findViewById(R.id.questions_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.planets_array, android.R.layout.simple_spinner_item);
+        Toast.makeText(this, "Selected: "+selected, Toast.LENGTH_SHORT).show();
+//        spinner = (Spinner) findViewById(R.id.questions_spinner);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.planets_array, android.R.layout.simple_spinner_item);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner.setAdapter(adapter);
 
         q_name = findViewById(R.id.question_name);
         record = findViewById(R.id.record_button);
@@ -201,7 +204,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                 String name = q_name.getText().toString();
                 UsersDbHelper usersDbHelper = new UsersDbHelper(getApplicationContext());
                 SQLiteDatabase database = usersDbHelper.getWritableDatabase();
-                selected=spinner.getSelectedItem().toString();
+//                selected=spinner.getSelectedItem().toString();
                 if (selected.equals("Question"))
                 {
                     usersDbHelper.addQuestion(name, database);
@@ -210,10 +213,20 @@ public class AddQuestionActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "File Saved", Toast.LENGTH_SHORT).show();
                     finish();
                 }
+                else if(selected.equals("Answer")){
+                    usersDbHelper.addAnswer(id,name, database);
+                    usersDbHelper.close();
+                    q_name.setText("");
+                    Toast.makeText(getApplicationContext(), "File Saved", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else{
+                    finish();
+                }
+
             }
         });
     }
-
 
 
 
