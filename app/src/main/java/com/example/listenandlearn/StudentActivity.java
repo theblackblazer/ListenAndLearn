@@ -3,13 +3,17 @@ package com.example.listenandlearn;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 public class StudentActivity extends AppCompatActivity {
 
@@ -19,12 +23,26 @@ public class StudentActivity extends AppCompatActivity {
     private  UsersDbHelper usersDbHelper;
     private SQLiteDatabase database;
     private Cursor cursor;
-    private CardView ans_card;
+    private CardView ans_card,q_card;
+    private MediaPlayer player = null;
+    private static String fileName = null;
+    private static final String LOG_TAG = "AudioRecordTest";
 
     @Override
     protected void onStart() {
         super.onStart();
         fetchAnswer();
+    }
+
+    private void startPlaying() {
+        player = new MediaPlayer();
+        try {
+            player.setDataSource(fileName);
+            player.prepare();
+            player.start();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
     }
 
     @Override
@@ -38,9 +56,27 @@ public class StudentActivity extends AppCompatActivity {
         answer=findViewById(R.id.aname_view);
         id=obj.getInt("qno");
         ans_card=findViewById(R.id.ans_card);
+        q_card=findViewById(R.id.ques_card);
 
         ques.setText(obj.getString("qname"));
         fetchAnswer();
+
+        q_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileName = getExternalCacheDir().getAbsolutePath();
+                fileName += "/"+obj.getString("qname")+".3gp";
+                startPlaying();
+            }
+        });
+        ans_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileName = getExternalCacheDir().getAbsolutePath();
+                fileName += "/"+answer.getText().toString()+".3gp";
+                startPlaying();
+            }
+        });
 
     }
     private void fetchAnswer(){

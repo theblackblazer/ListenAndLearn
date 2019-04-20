@@ -4,13 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 public class ViewQuestions extends AppCompatActivity {
 
@@ -21,7 +25,10 @@ public class ViewQuestions extends AppCompatActivity {
     private  UsersDbHelper usersDbHelper;
     private SQLiteDatabase database;
     private Cursor cursor;
-    private CardView ans_card;
+    private CardView ans_card,qcard;
+    private MediaPlayer player = null;
+    private static String fileName = null;
+    private static final String LOG_TAG = "AudioRecordTest";
 
     @Override
     protected void onStart() {
@@ -41,6 +48,7 @@ public class ViewQuestions extends AppCompatActivity {
         answer=findViewById(R.id.aname_view);
         id=obj.getInt("qno");
         ans_card=findViewById(R.id.ans_card);
+        qcard=findViewById(R.id.q_card);
 
         ques.setText(obj.getString("qname"));
         fetchAnswer();
@@ -54,6 +62,22 @@ public class ViewQuestions extends AppCompatActivity {
             }
         });
 
+        qcard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileName = getExternalCacheDir().getAbsolutePath();
+                fileName += "/"+obj.getString("qname")+".3gp";
+                startPlaying();
+            }
+        });
+        ans_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileName = getExternalCacheDir().getAbsolutePath();
+                fileName += "/"+answer.getText().toString()+".3gp";
+                startPlaying();
+            }
+        });
     }
     @SuppressLint("RestrictedApi")
     private void fetchAnswer(){
@@ -74,4 +98,15 @@ public class ViewQuestions extends AppCompatActivity {
             answer.setText(cursor.getString(1));
         }
     }
+    private void startPlaying() {
+        player = new MediaPlayer();
+        try {
+            player.setDataSource(fileName);
+            player.prepare();
+            player.start();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+    }
+
 }
