@@ -7,6 +7,8 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Px;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 
 public class AddQuestionActivity extends AppCompatActivity {
@@ -29,17 +32,15 @@ public class AddQuestionActivity extends AppCompatActivity {
     Handler seekHandler = new Handler();
     String selected = "";
     EditText q_name;
-    Button record;
-    Button play;
-    Button save;
-    SeekBar seekbar;
+    FloatingActionButton record,play,save;
+//    SeekBar seekbar;
 //    Spinner spinner;
     private TextView time;
     private int id;
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static String fileName = null;
-
+    private File audio;
     private MediaRecorder recorder = null;
     private MediaPlayer player = null;
 
@@ -77,12 +78,13 @@ public class AddQuestionActivity extends AppCompatActivity {
 
     private void stopPlaying() {
         player.release();
-
-        seekbar.setProgress(0);
+//        seekbar.setProgress(0);
     }
 
     private void startRecording() {
+        recorder = null;
         recorder = new MediaRecorder();
+        fileName += "/"+q_name.getText().toString()+".3gp";
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setOutputFile(fileName);
@@ -100,7 +102,6 @@ public class AddQuestionActivity extends AppCompatActivity {
     private void stopRecording() {
         recorder.stop();
         recorder.release();
-        recorder = null;
     }
 
 
@@ -123,8 +124,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_question);
         selected=getIntent().getStringExtra("selected");
         id=getIntent().getIntExtra("id",0);
-
-        Toast.makeText(this, "Selected: "+selected, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Selected: "+selected, Toast.LENGTH_SHORT).show();
 //        spinner = (Spinner) findViewById(R.id.questions_spinner);
 //        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 //                R.array.planets_array, android.R.layout.simple_spinner_item);
@@ -136,11 +136,14 @@ public class AddQuestionActivity extends AppCompatActivity {
         record = findViewById(R.id.record_button);
         play = findViewById(R.id.play_button);
         save = findViewById(R.id.save_button);
-        seekbar = findViewById(R.id.seekbar);
+//        seekbar = findViewById(R.id.seekbar);
+        String new_name=q_name.getText().toString();
+        new_name+=".3gp";
+
+        audio=new File(getBaseContext().getFilesDir().getPath());
 
         fileName = getExternalCacheDir().getAbsolutePath();
-        fileName += "/audiorecordtest.3gp";
-
+        Toast.makeText(this, ""+getBaseContext().getFilesDir(), Toast.LENGTH_LONG).show();
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
 
@@ -151,9 +154,9 @@ public class AddQuestionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 onRecord(mStartRecording);
                 if (mStartRecording) {
-                    record.setText("Stop Recording");
+                    record.setImageResource(R.drawable.ic_mic_off_black_24dp);
                 } else {
-                    record.setText("Record");
+                    record.setImageResource(R.drawable.ic_mic_black_24dp);
                 }
                 mStartRecording = !mStartRecording;
             }
@@ -166,36 +169,36 @@ public class AddQuestionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 onPlay(mStartPlaying);
                 if (mStartPlaying) {
-                    play.setText("Stop");
-                    seekbar.setMax(player.getDuration());
-                    seekUpdation();
+                    play.setImageResource(R.drawable.ic_stop_black_24dp);
+//                    seekbar.setMax(player.getDuration());
+//                    seekUpdation();
                 } else {
-                    play.setText("Play");
+                    play.setImageResource(R.drawable.ic_play_arrow_black_24dp);
 
                 }
                 mStartPlaying = !mStartPlaying;
             }
         });
 
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressvalue = 0;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressvalue = progress;
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+//        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            int progressvalue = 0;
+//
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                progressvalue = progress;
+//
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
 
         save.setOnClickListener(new View.OnClickListener() {
 
@@ -205,7 +208,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                 UsersDbHelper usersDbHelper = new UsersDbHelper(getApplicationContext());
                 SQLiteDatabase database = usersDbHelper.getWritableDatabase();
 //                selected=spinner.getSelectedItem().toString();
-                if (selected.equals("Question"))
+                if (selected.equals("Question") && !name.equals(""))
                 {
                     usersDbHelper.addQuestion(name, database);
                     usersDbHelper.close();
@@ -213,7 +216,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "File Saved", Toast.LENGTH_SHORT).show();
                     finish();
                 }
-                else if(selected.equals("Answer")){
+                else if(selected.equals("Answer") && !name.equals("")){
                     usersDbHelper.addAnswer(id,name, database);
                     usersDbHelper.close();
                     q_name.setText("");
@@ -244,19 +247,18 @@ public class AddQuestionActivity extends AppCompatActivity {
         }
     }
 
-    Runnable run = new Runnable() {
+//    Runnable run = new Runnable() {
+//
+//        @Override
+//        public void run() {
+//            seekUpdation();
+//        }
+//    };
 
-        @Override
-        public void run() {
-            seekUpdation();
-        }
-    };
-
-    public void seekUpdation() {
-
-        seekbar.setProgress(player.getCurrentPosition());
-        seekHandler.postDelayed(run, 1000);
-    }
-
+//    public void seekUpdation() {
+//
+//        seekbar.setProgress(player.getCurrentPosition());
+//        seekHandler.postDelayed(run, 1000);
+//    }
 }
 
