@@ -124,6 +124,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_question);
         selected=getIntent().getStringExtra("selected");
         id=getIntent().getIntExtra("id",0);
+
 //        Toast.makeText(this, "Selected: "+selected, Toast.LENGTH_SHORT).show();
 //        spinner = (Spinner) findViewById(R.id.questions_spinner);
 //        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,

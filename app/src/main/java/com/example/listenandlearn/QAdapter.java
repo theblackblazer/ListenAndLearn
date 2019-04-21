@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -14,11 +15,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.List;
 
 public class QAdapter extends RecyclerView.Adapter<QAdapter.MyViewHolder> {
     private List<QList> qList;
     private Context context;
+    UsersDbHelper usersDbHelper;
+    SQLiteDatabase database;
+    int row_id;
+
+
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -53,6 +61,11 @@ public class QAdapter extends RecyclerView.Adapter<QAdapter.MyViewHolder> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show();
+                        usersDbHelper = new UsersDbHelper(context);
+                        database = usersDbHelper.getWritableDatabase();
+                        row_id = obj.getInt("qno");
+                        usersDbHelper.deleteAnswers(row_id,database);
+                        usersDbHelper.deleteQuestions(row_id,database);
                         context.startActivity(new Intent(context,ParentActivity.class));
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -88,5 +101,6 @@ public class QAdapter extends RecyclerView.Adapter<QAdapter.MyViewHolder> {
             cardView=v.findViewById(R.id.card);
         }
     }
+
 
 }

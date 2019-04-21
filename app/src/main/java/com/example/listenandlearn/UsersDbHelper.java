@@ -78,5 +78,14 @@ public class UsersDbHelper extends SQLiteOpenHelper {
         Log.d("Database Operations", "One Row Inserted ..");
 
     }
+    public void deleteQuestions(int id,SQLiteDatabase database) {
+        String selection = UsersContract.UsersEntry.Question_Id+" = "+id;
+        database.delete(UsersContract.UsersEntry.QUESTION_TABLE,selection,null);
+
+    }
+    public void deleteAnswers(int id,SQLiteDatabase database) {
+        String selection = UsersContract.UsersEntry.Answer_Id+" = "+id;
+        database.delete(UsersContract.UsersEntry.ANSWER_TABLE,selection,null);
+    }
 
 }
