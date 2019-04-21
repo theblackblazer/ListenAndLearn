@@ -125,7 +125,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         selected=getIntent().getStringExtra("selected");
         id=getIntent().getIntExtra("id",0);
 
-//        Toast.makeText(this, "Selected: "+selected, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Selected: "+selected, Toast.LENGTH_SHORT).show();
 //        spinner = (Spinner) findViewById(R.id.questions_spinner);
 //        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 //                R.array.planets_array, android.R.layout.simple_spinner_item);
@@ -144,7 +144,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         audio=new File(getBaseContext().getFilesDir().getPath());
 
         fileName = getExternalCacheDir().getAbsolutePath();
-        Toast.makeText(this, ""+getBaseContext().getFilesDir(), Toast.LENGTH_LONG).show();
+
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
 
