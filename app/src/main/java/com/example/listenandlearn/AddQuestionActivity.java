@@ -29,13 +29,12 @@ import java.io.IOException;
 public class AddQuestionActivity extends AppCompatActivity {
 
 
-    Handler seekHandler = new Handler();
     String selected = "";
     EditText q_name;
-    FloatingActionButton record,play,save;
+    FloatingActionButton record, play, save;
 //    SeekBar seekbar;
 //    Spinner spinner;
-    private TextView time;
+
     private int id;
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -84,7 +83,7 @@ public class AddQuestionActivity extends AppCompatActivity {
     private void startRecording() {
         recorder = null;
         recorder = new MediaRecorder();
-        fileName += "/"+q_name.getText().toString()+".3gp";
+        fileName += "/" + q_name.getText().toString() + ".3gp";
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setOutputFile(fileName);
@@ -122,10 +121,10 @@ public class AddQuestionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_question);
-        selected=getIntent().getStringExtra("selected");
-        id=getIntent().getIntExtra("id",0);
+        selected = getIntent().getStringExtra("selected");
+        id = getIntent().getIntExtra("id", 0);
 
-        Toast.makeText(this, "Selected: "+selected, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Selected: " + selected, Toast.LENGTH_SHORT).show();
 //        spinner = (Spinner) findViewById(R.id.questions_spinner);
 //        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 //                R.array.planets_array, android.R.layout.simple_spinner_item);
@@ -138,10 +137,8 @@ public class AddQuestionActivity extends AppCompatActivity {
         play = findViewById(R.id.play_button);
         save = findViewById(R.id.save_button);
 //        seekbar = findViewById(R.id.seekbar);
-        String new_name=q_name.getText().toString();
-        new_name+=".3gp";
 
-        audio=new File(getBaseContext().getFilesDir().getPath());
+        audio = new File(getBaseContext().getFilesDir().getPath());
 
         fileName = getExternalCacheDir().getAbsolutePath();
 
@@ -209,29 +206,25 @@ public class AddQuestionActivity extends AppCompatActivity {
                 UsersDbHelper usersDbHelper = new UsersDbHelper(getApplicationContext());
                 SQLiteDatabase database = usersDbHelper.getWritableDatabase();
 //                selected=spinner.getSelectedItem().toString();
-                if (selected.equals("Question") && !name.equals(""))
-                {
+                if (selected.equals("Question") && !name.equals("")) {
                     usersDbHelper.addQuestion(name, database);
                     usersDbHelper.close();
                     q_name.setText("");
                     Toast.makeText(getApplicationContext(), "File Saved", Toast.LENGTH_SHORT).show();
                     finish();
-                }
-                else if(selected.equals("Answer") && !name.equals("")){
-                    usersDbHelper.addAnswer(id,name, database);
+                } else if (selected.equals("Answer") && !name.equals("")) {
+                    usersDbHelper.addAnswer(id, name, database);
                     usersDbHelper.close();
                     q_name.setText("");
                     Toast.makeText(getApplicationContext(), "File Saved", Toast.LENGTH_SHORT).show();
                     finish();
-                }
-                else{
+                } else {
                     finish();
                 }
 
             }
         });
     }
-
 
 
     @Override
