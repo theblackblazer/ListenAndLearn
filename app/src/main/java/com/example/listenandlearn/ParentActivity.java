@@ -86,6 +86,11 @@ public class ParentActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutAnimation(animation);
     }
+    @Override
+        public void onBackPressed()
+    {
+        
+    }
 
 }
 
