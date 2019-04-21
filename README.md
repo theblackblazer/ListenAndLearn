@@ -1,7 +1,7 @@
 # ListenAndLearn
 An Android App specially made for students who are unable to read and write to enable fast learning.
 
-# Main Motivations behind the Application
+# Main Motivation behind the Application
 Since students are unable to read and write, hearing information will help them learn faster.
 
 # Key Features
