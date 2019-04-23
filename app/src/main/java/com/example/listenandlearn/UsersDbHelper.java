@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.lang.UScript;
 import android.provider.ContactsContract;
 import android.util.Log;
 
@@ -86,6 +87,8 @@ public class UsersDbHelper extends SQLiteOpenHelper {
     public void deleteAnswers(int id,SQLiteDatabase database) {
         String selection = UsersContract.UsersEntry.Answer_Id+" = "+id;
         database.delete(UsersContract.UsersEntry.ANSWER_TABLE,selection,null);
+        database.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + UsersContract.UsersEntry.ANSWER_TABLE + "'");
+
     }
 
 }
