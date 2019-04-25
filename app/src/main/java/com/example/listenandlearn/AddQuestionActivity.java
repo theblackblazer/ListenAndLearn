@@ -152,8 +152,10 @@ public class AddQuestionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 onRecord(mStartRecording);
                 if (mStartRecording) {
+                    Toast.makeText(AddQuestionActivity.this, "Recording Started. Tap icon to stop recording", Toast.LENGTH_SHORT).show();
                     record.setImageResource(R.drawable.ic_mic_off_black_24dp);
                 } else {
+                    Toast.makeText(AddQuestionActivity.this, "Recording Stopped", Toast.LENGTH_SHORT).show();
                     record.setImageResource(R.drawable.ic_mic_black_24dp);
                 }
                 mStartRecording = !mStartRecording;
