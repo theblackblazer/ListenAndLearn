@@ -1,5 +1,7 @@
 package com.example.listenandlearn;
 
+
+// Qlist contains Getter and Setter Methods to Store Values and Pass to Adapter,
 public class QList {
     private String qname;
     private int qno;

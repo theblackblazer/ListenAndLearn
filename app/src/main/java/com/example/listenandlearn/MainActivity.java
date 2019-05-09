@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+// The main screen or home screen of App. Shows Student Mode
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton login;
@@ -29,12 +30,14 @@ public class MainActivity extends AppCompatActivity {
     private int resId;
     private LayoutAnimationController animation;
 
+    // Refreshes Activity after every user action.
     @Override
     protected void onStart() {
         super.onStart();
         fetchQuestions();
     }
 
+    // Instantiate App HomePage.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 fetchQuestions();
 
     }
+
+    // Function to fetch questions from database and view them in a recycler view.
     private void fetchQuestions(){
 
         qlist.clear();

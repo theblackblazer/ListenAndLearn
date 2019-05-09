@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
+// Activity to Add Questions and Answers
 public class AddQuestionActivity extends AppCompatActivity {
 
 
@@ -47,6 +48,7 @@ public class AddQuestionActivity extends AppCompatActivity {
     private boolean permissionToRecordAccepted = false;
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
+    // Function to start or stop recording
     private void onRecord(boolean start) {
         if (start) {
             startRecording();
@@ -55,6 +57,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         }
     }
 
+    // Function to start or stop playing audio
     private void onPlay(boolean start) {
         if (start) {
             startPlaying();
@@ -63,7 +66,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         }
     }
 
-
+    // Start Playing Audio Function
     private void startPlaying() {
         player = new MediaPlayer();
         try {
@@ -75,11 +78,13 @@ public class AddQuestionActivity extends AppCompatActivity {
         }
     }
 
+    // Stop Playing Audio function
     private void stopPlaying() {
         player.release();
 //        seekbar.setProgress(0);
     }
 
+    // Start Recording using Media Recorder
     private void startRecording() {
         recorder = null;
         recorder = new MediaRecorder();
@@ -104,6 +109,7 @@ public class AddQuestionActivity extends AppCompatActivity {
     }
 
 
+    // Requesting Permissions to Record Audio
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -117,6 +123,7 @@ public class AddQuestionActivity extends AppCompatActivity {
     }
 
 
+    // OnCreate Method to instantiate Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,7 +151,7 @@ public class AddQuestionActivity extends AppCompatActivity {
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
-
+        // Record button used to start and stop recording audio.
         record.setOnClickListener(new View.OnClickListener() {
             boolean mStartRecording = true;
 
@@ -162,6 +169,7 @@ public class AddQuestionActivity extends AppCompatActivity {
             }
         });
 
+        // Play button used to play or stop playing audio
         play.setOnClickListener(new View.OnClickListener() {
             boolean mStartPlaying = true;
 
@@ -200,6 +208,7 @@ public class AddQuestionActivity extends AppCompatActivity {
 //            }
 //        });
 
+        // Save Button required to save Audio to File Storage.
         save.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -228,7 +237,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         });
     }
 
-
+    // Function to stop Media Recorder and Media Player
     @Override
     public void onStop() {
         super.onStop();

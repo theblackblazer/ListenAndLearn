@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+// Registration Activity to let users signup to app.
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText Email;
@@ -17,6 +18,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView login;
     private Button signup;
 
+    // Initialize App Signup Screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Password = findViewById(R.id.password_signup);
         signup = findViewById(R.id.signup_btn);
 
+        // Login Textview used to navigate to Login Screen
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,6 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
+        // Signup button used to register a user on to the Application.
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

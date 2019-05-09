@@ -1,5 +1,6 @@
 package com.example.listenandlearn;
 
+// Class contains default initialization of Database And Table Names.
 public final class UsersContract {
 
     private UsersContract() {}

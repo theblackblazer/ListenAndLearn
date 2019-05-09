@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+// Creating Login Activity for Login to Parent Mode in App.
 public class LoginActivity extends AppCompatActivity {
 
     private TextView signup;
@@ -19,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button login;
     private Cursor cursor;
 
+    // Instantiate LoginActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         pass = findViewById(R.id.password_login);
         login = findViewById(R.id.login_btn);
 
-
+        // Signup TextView used to move to Registration Screen
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Login Button used to login user using correct credentials.
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

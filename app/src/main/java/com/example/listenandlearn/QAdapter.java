@@ -18,6 +18,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.List;
 
+
+// Adapter to store all values to be displayed in Recycler View
 public class QAdapter extends RecyclerView.Adapter<QAdapter.MyViewHolder> {
     private List<QList> qList;
     private Context context;
@@ -26,13 +28,14 @@ public class QAdapter extends RecyclerView.Adapter<QAdapter.MyViewHolder> {
     int row_id;
 
 
-
+    // View Holder Creation
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return new MyViewHolder(LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.recycler_view_item, viewGroup, false));
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {

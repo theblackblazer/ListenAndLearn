@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+// View Questions Activity that displays both Question and Answer for the student to hear.
 public class ViewQuestions extends AppCompatActivity {
 
     private FloatingActionButton ans;
@@ -30,12 +31,14 @@ public class ViewQuestions extends AppCompatActivity {
     private static String fileName = null;
     private static final String LOG_TAG = "AudioRecordTest";
 
+    // Refreshes Activity after every user action.
     @Override
     protected void onStart() {
         super.onStart();
         fetchAnswer();
     }
 
+    // Initialize View Questions Screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +53,11 @@ public class ViewQuestions extends AppCompatActivity {
         ans_card=findViewById(R.id.ans_card);
         qcard=findViewById(R.id.q_card);
 
+
         ques.setText(obj.getString("qname"));
         fetchAnswer();
+
+        // Answer button used to go to AddQuestionActivity to Add Answer
         ans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +67,7 @@ public class ViewQuestions extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+        // Card used to play Question File.
         qcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +76,7 @@ public class ViewQuestions extends AppCompatActivity {
                 startPlaying();
             }
         });
+        // Card used to play Answer File.
         ans_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +105,8 @@ public class ViewQuestions extends AppCompatActivity {
             answer.setText(cursor.getString(1));
         }
     }
+
+    // Start Playing Audio File from File Storage.
     private void startPlaying() {
         player = new MediaPlayer();
         try {

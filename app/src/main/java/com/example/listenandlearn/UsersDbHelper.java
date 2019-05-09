@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.lang.UScript;
 import android.provider.ContactsContract;
 import android.util.Log;
-
+// Create Local Database
 public class UsersDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "users_db";
@@ -21,13 +21,14 @@ public class UsersDbHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_ANSWER = "create table " + UsersContract.UsersEntry.ANSWER_TABLE + "( " + UsersContract.UsersEntry.Answer_Id + " INTEGER PRIMARY KEY," + UsersContract.UsersEntry.Answer_Name + " text);";
     public static final String DROP_TABLE_ANSWER = "drop table if exists " + UsersContract.UsersEntry.ANSWER_TABLE;
 
-
+    // Default Constructor to initialize database
     public UsersDbHelper(Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         Log.d("Database Operations", "Database Created ...");
     }
 
+    // Creating Tables in Database
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -39,7 +40,7 @@ public class UsersDbHelper extends SQLiteOpenHelper {
         Log.d("Database Operations", "Table Created");
 
     }
-
+    // Check whether Table Exists. Dropping Tables if existing.
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
@@ -48,7 +49,7 @@ public class UsersDbHelper extends SQLiteOpenHelper {
         db.execSQL(DROP_TABLE_ANSWER);
         onCreate(db);
     }
-
+    // Adding Users to Users Table.
     public void addUser(String email, String password, SQLiteDatabase database) {
 
         ContentValues contentValues = new ContentValues();
@@ -59,7 +60,7 @@ public class UsersDbHelper extends SQLiteOpenHelper {
         Log.d("Database Operations", "One Row Inserted ...");
 
     }
-
+    // Adding Questions to Questions Table
     public void addQuestion(String q_name, SQLiteDatabase database) {
 
         ContentValues contentValues = new ContentValues();
@@ -69,6 +70,7 @@ public class UsersDbHelper extends SQLiteOpenHelper {
         Log.d("Database Operations", "One Row Inserted ..");
     }
 
+    // Adding Answers to Answers Table
     public void addAnswer(int a_id, String a_name, SQLiteDatabase database) {
 
         ContentValues contentValues = new ContentValues();
@@ -79,11 +81,15 @@ public class UsersDbHelper extends SQLiteOpenHelper {
         Log.d("Database Operations", "One Row Inserted ..");
 
     }
+
+    // Delete Questions from Questions Database
     public void deleteQuestions(int id,SQLiteDatabase database) {
         String selection = UsersContract.UsersEntry.Question_Id+" = "+id;
         database.delete(UsersContract.UsersEntry.QUESTION_TABLE,selection,null);
 
     }
+
+    // Delete Answers from Answers Table
     public void deleteAnswers(int id,SQLiteDatabase database) {
         String selection = UsersContract.UsersEntry.Answer_Id+" = "+id;
         database.delete(UsersContract.UsersEntry.ANSWER_TABLE,selection,null);

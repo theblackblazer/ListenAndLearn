@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+
+// Student Activity that displays both Question and Answer for the student to hear.
 public class StudentActivity extends AppCompatActivity {
 
     private Bundle obj;
@@ -28,12 +30,14 @@ public class StudentActivity extends AppCompatActivity {
     private static String fileName = null;
     private static final String LOG_TAG = "AudioRecordTest";
 
+    // Refreshes Activity after every user action.
     @Override
     protected void onStart() {
         super.onStart();
         fetchAnswer();
     }
 
+    // Used to start playing audio on Card Click.
     private void startPlaying() {
         player = new MediaPlayer();
         try {
@@ -45,6 +49,7 @@ public class StudentActivity extends AppCompatActivity {
         }
     }
 
+    // Initialize Student Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +65,7 @@ public class StudentActivity extends AppCompatActivity {
 
         ques.setText(obj.getString("qname"));
         fetchAnswer();
-
+        // Card to play Question File
         q_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +74,7 @@ public class StudentActivity extends AppCompatActivity {
                 startPlaying();
             }
         });
+        // Card used to play answer file.
         ans_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +85,7 @@ public class StudentActivity extends AppCompatActivity {
         });
 
     }
+    // Function to fetch Answers from Answers Table
     private void fetchAnswer(){
         cursor = database.rawQuery("SELECT * FROM "+
                 UsersContract.UsersEntry.ANSWER_TABLE

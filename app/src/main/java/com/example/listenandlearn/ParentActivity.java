@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+// ParentActivity where Parent can view all added questions.
 public class ParentActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -28,12 +29,15 @@ public class ParentActivity extends AppCompatActivity {
     private Cursor cursor;
     private int resId;
     private LayoutAnimationController animation;
+
+    // Refreshes Activity after every user action.
     @Override
     protected void onStart() {
         super.onStart();
         fetchQuestions();
     }
 
+    // Initialize Parent Home Screen.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +55,7 @@ public class ParentActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(false);
 
+        // Button used to move to AddQuestionActivity
         addQuesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +65,8 @@ public class ParentActivity extends AppCompatActivity {
 
             }
         });
+
+        // Button used to logout from Accounr and read Student Mode.
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +76,7 @@ public class ParentActivity extends AppCompatActivity {
        fetchQuestions();
     }
 
+    // Fetch Questions from Database and add to Recycler View
     private void fetchQuestions(){
 
         qlist.clear();
@@ -86,6 +94,8 @@ public class ParentActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutAnimation(animation);
     }
+
+    // Session Management Function
     @Override
         public void onBackPressed()
     {
